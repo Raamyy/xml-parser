@@ -37,9 +37,9 @@ bool XMLParser::IsCloseTag(const string line)
 	return false;
 }
 
-void XMLParser::PrintNodes(vector<string>& nodes, int level)
+void XMLParser::PrintNodes(vector<string>::iterator start, vector<string>::iterator end, int level)
 {
-		for (auto it = nodes.begin(); it != nodes.end(); ) {
+		for (auto it = start; it < end; ) {
 			it = PrintNode(it,level);
 		}
 }
@@ -49,10 +49,9 @@ vector<string>::iterator XMLParser::PrintNode(vector<string>::iterator& node, in
 	if (IsOpenTag(*node)) {
 		PrintWithTabs(*node, level);
 		auto children = GetChildren(node);
-		PrintNodes(children, level + 1);
-		PrintWithTabs(*node, level);
+		PrintNodes(children.first,children.second, level + 1);
 		PrintWithTabs("</"+GetOpenTagName(*node)+">", level);
-		return children.end();
+		return children.second+1;
 	}
 	else{
 		PrintWithTabs(*node, level);
@@ -67,18 +66,17 @@ void XMLParser::PrintWithTabs(string text, int level)
 	cout << text << endl;
 }
 
-vector<string> XMLParser::GetChildren(vector<string>::iterator& node)
+pair<vector<string>::iterator, vector<string>::iterator> XMLParser::GetChildren(vector<string>::iterator& node)
 {
 	string openName = GetOpenTagName(*node);
 	auto closingTagit = find(node, XMLLines.end(), "</" + openName + ">");
-	vector<string> children(node + 1, closingTagit);
-	return children;
+	return make_pair(node+1,closingTagit);
 }
 
 
 XMLData XMLParser::LoadFile(string filePath)
 {
-	ifstream XMLfile(filePath);
+	/*ifstream XMLfile(filePath);
 	vector<string> XMLLines;
 	if (XMLfile.is_open())
 	{
@@ -93,7 +91,7 @@ XMLData XMLParser::LoadFile(string filePath)
 		XMLfile.close();
 	}
 
-	else cout << "Unable to open file";
+	else cout << "Unable to open file";*/
 
 	return XMLData();
 }
@@ -111,7 +109,7 @@ XMLParser::XMLParser(string filePath)
 		}
 
 
-		PrintNodes(XMLLines, 0);
+		PrintNodes(XMLLines.begin(),XMLLines.end(), 0);
 
 		XMLfile.close();
 	}
