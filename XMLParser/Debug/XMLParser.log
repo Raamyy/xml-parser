@@ -1,0 +1,40 @@
+﻿  Source.cpp
+  XMLParser.cpp
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(48,29): error C2664: 'void XMLParser::PrintNode(std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int)': cannot convert argument 1 from '_Ty' to 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>'
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(48,21): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.h(14,7): message : see declaration of 'XMLParser::PrintNode'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(50,34): error C2664: 'void XMLParser::PrintNode(std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int)': cannot convert argument 1 from 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' to 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>'
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(50,14): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.h(14,7): message : see declaration of 'XMLParser::PrintNode'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(55,28): error C2664: 'void XMLParser::PrintNode(std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int)': cannot convert argument 1 from '_Ty' to 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>'
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(55,20): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.h(14,7): message : see declaration of 'XMLParser::PrintNode'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(60,1): error C2556: 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>> XMLParser::PrintNode(std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int)': overloaded function differs only by return type from 'void XMLParser::PrintNode(std::_Vector_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,int)'
+          with
+          [
+              _Ty=std::string
+          ]
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.h(14): message : see declaration of 'XMLParser::PrintNode'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(59,37): error C2371: 'XMLParser::PrintNode': redefinition; different basic types
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.h(14): message : see declaration of 'XMLParser::PrintNode'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(63,2): error C2143: syntax error: missing ';' before '}'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(76,27): error C2065: 'nodes': undeclared identifier
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(76,42): error C2065: 'nodes': undeclared identifier
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(76,22): error C2672: 'find': no matching overloaded function found
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(76,76): error C2780: '_InIt std::find(_InIt,const _InIt,const _Ty &)': expects 3 arguments - 2 provided
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.27.29110\include\xutility(5171): message : see declaration of 'std::find'
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(77,26): error C2065: 'nodes': undeclared identifier
+C:\Users\ppc3\source\repos\XMLParser\XMLParser\XMLParser.cpp(77,57): error C3536: 'closingTagit': cannot be used before it is initialized
+  Generating Code...
