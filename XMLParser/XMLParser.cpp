@@ -37,31 +37,26 @@ bool XMLParser::IsCloseTag(const string line)
 	return false;
 }
 
-void XMLParser::PrintNodes(vector<string> nodes, int level)
+void XMLParser::PrintNodes(vector<string>& nodes, int level)
 {
-	if (IsOpenTag(nodes[0])) {
-		string openName = GetOpenTagName(nodes[0]);
-		auto closingTagit = find(nodes.begin(), nodes.end(), "</" + openName + ">");
-		vector<string> children(nodes.begin() + 1, closingTagit);
-
 		for (auto it = nodes.begin(); it != nodes.end(); ) {
-			PrintNode(nodes[0], level); //opening
-			PrintNodes(children, level + 1);
-			PrintNode(*closingTagit, level); // closing
-			it = closingTagit;
+			it = PrintNode(it,level);
 		}
-	}
-	else if (!IsCloseTag(nodes[0])) {
-		PrintNode(nodes[0], level);
-	}
 }
 
-vector<string>::iterator XMLParser::PrintNode(vector<string>::iterator node, int level)
+vector<string>::iterator XMLParser::PrintNode(vector<string>::iterator& node, int level)
 {
 	if (IsOpenTag(*node)) {
 		PrintWithTabs(*node, level);
 		auto children = GetChildren(node);
 		PrintNodes(children, level + 1);
+		PrintWithTabs(*node, level);
+		PrintWithTabs("</"+GetOpenTagName(*node)+">", level);
+		return children.end();
+	}
+	else{
+		PrintWithTabs(*node, level);
+		return node + 1;
 	}
 }
 
@@ -72,7 +67,7 @@ void XMLParser::PrintWithTabs(string text, int level)
 	cout << text << endl;
 }
 
-vector<string> XMLParser::GetChildren(vector<string>::iterator node)
+vector<string> XMLParser::GetChildren(vector<string>::iterator& node)
 {
 	string openName = GetOpenTagName(*node);
 	auto closingTagit = find(node, XMLLines.end(), "</" + openName + ">");
