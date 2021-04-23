@@ -36,7 +36,7 @@ void XMLParser::initOrderedTokens(string xmlFileText)
 {
 	const std::regex re_openTags(R"!!(<([\w+]*)>)!!", std::regex::icase);
 	const std::regex re_closedTags(R"!!(</([\w+]*)>)!!", std::regex::icase);
-	const std::regex re_text(R"!!([>]([\w\s.,\(\)\[\]+]+)[<])!!", std::regex::icase);
+	const std::regex re_text(R"!!([>]([\w\s.,/:\-\_@%\(\)\[\]+]+)[<])!!", std::regex::icase);
 
 	vector<Token> Tokens;
 

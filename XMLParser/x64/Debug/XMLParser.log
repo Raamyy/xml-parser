@@ -1,7 +1,5 @@
-﻿  Source.cpp
-  XMLParser.cpp
+﻿  XMLParser.cpp
 e:\projects\xml\xmlparser\xmlparser.cpp(87): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
 e:\projects\xml\xmlparser\xmlparser.cpp(91): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
 e:\projects\xml\xmlparser\xmlparser.cpp(95): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  Generating Code...
   XMLParser.vcxproj -> E:\Projects\xml\x64\Debug\XMLParser.exe
