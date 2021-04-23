@@ -7,7 +7,7 @@ class ParentNode :
 	public Node
 {
 public:
-	void print();
+	string toString();
 	vector<Node*> children;
 	void addChild(Node* node);
 	ParentNode();

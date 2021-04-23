@@ -2,14 +2,16 @@
 
 
 
-void ParentNode::print()
+string ParentNode::toString()
 {
-	printTabs();
-	cout << "<" + text + ">"<<endl;
+	string ret;
+	ret += getTabs();
+	ret += "<" + text + ">"+'\n';
 	for (auto child : children)
-		child->print();
-	printTabs();
-	cout << "</" + text + ">" << endl;
+		ret += child->toString();
+	ret += getTabs();
+	ret +="</" + text + ">" + '\n';
+	return ret;
 }
 
 void ParentNode::addChild(Node* node)

@@ -14,6 +14,11 @@ void XMLData::print()
 	root->print();
 }
 
+string XMLData::toString()
+{
+	return root->toString();
+}
+
 XMLData::~XMLData()
 {
 }

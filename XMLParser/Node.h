@@ -8,10 +8,12 @@ protected:
 	string text;
 	int level;
 	void printTabs();
+	string getTabs();
 public:
 	Node();
 	Node(string text, int level);
-	virtual void print() = 0;
+	void print() ;
+	virtual string toString() = 0;
 	~Node();
 };
 

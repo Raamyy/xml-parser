@@ -4,7 +4,7 @@ class TextNode :
 	public Node
 {
 public:
-	void print();
+	string toString();
 	TextNode();
 	TextNode(string text, int level);
 	~TextNode();

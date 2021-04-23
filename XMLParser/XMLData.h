@@ -7,6 +7,7 @@ public:
 	XMLData();
 	XMLData(Node *);
 	void print();
+	string toString();
 	~XMLData();
 };
 

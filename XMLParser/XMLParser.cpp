@@ -98,9 +98,25 @@ void XMLParser::add_tokens(const std::regex reg, string& text, vector<Token>& to
 	}
 }
 
+string XMLParser::toString(XMLData data)
+{
+	return data.toString();
+}
+
 XMLData XMLParser::getData()
 {
 	return parse(OrderedTokens.begin(), 0, root);
+}
+
+void XMLParser::saveData(string fileName)
+{
+	auto data = this->getData();
+	ofstream myfile;
+	myfile.open(fileName);
+	string s = this->toString(data);
+	myfile << s;
+	myfile.close();
+
 }
 
 XMLParser::XMLParser(string filePath)

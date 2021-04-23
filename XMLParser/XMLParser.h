@@ -17,8 +17,10 @@ class XMLParser
 	XMLData parse(vector<Token>::iterator it, int level, ParentNode & parent);
 	void initOrderedTokens(string xmlFileText);
 	void add_tokens(const std::regex reg, string& text, vector<Token>& tokens, TokenType type);
+	string toString(XMLData data);
 public:
-	XMLData getData();
 	XMLParser(string filePath);
+	XMLData getData();
+	void saveData(string fileName);
 };
 

@@ -1,12 +1,8 @@
 #include "TextNode.h"
 
-
-
-void TextNode::print()
+string TextNode::toString()
 {
-	printTabs();
-	cout << text;
-	cout << endl;
+	return getTabs() + text + "\n";
 }
 
 TextNode::TextNode()
