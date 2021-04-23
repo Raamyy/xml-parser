@@ -5,95 +5,102 @@
 #include <regex>
 #include <algorithm>
 #include "Helpers.h"
+#include "TextNode.h"
+#include "ParentNode.h"
 using namespace std;
 
-string XMLParser::GetOpenTagName(const string line)
+pair<vector<Node*>, vector<Token>::iterator> XMLParser::GetChildren(vector<Token>::iterator open_token_it, int level)
 {
-	regex re("<(\\w+)>");
-	smatch match;
-	if (regex_search(line.begin(), line.end(), match, re)) {
-		return match[1];
+	vector<Node*> children;
+	auto closeTag_it = GetClosingTag(open_token_it);
+	for (auto it = open_token_it + 1; it < closeTag_it;) {
+		auto parseResult = parseNode(it, level);
+		children.push_back(parseResult.first);
+		it = parseResult.second;
 	}
-	return "";
+	return make_pair(children, closeTag_it);
 }
 
-bool XMLParser::IsOpenTag(const string line)
+vector<Token>::iterator XMLParser::GetClosingTag(vector<Token>::iterator open_token_it)
 {
-	regex re("<(\\w+)>");
-	smatch match;
-	if (regex_search(line.begin(), line.end(), match, re)) {
-		return match[1] != "";
+	string name = open_token_it->text;
+	auto it = open_token_it;
+	for (; it != OrderedTokens.end(); it++) {
+		if (it->text == name && it->type == TokenType::CloseTag) return it;
 	}
-	return false;
+	throw "closing tag not found for " + open_token_it->text;
 }
 
-bool XMLParser::IsCloseTag(const string line)
+
+void XMLParser::initOrderedTokens(string xmlFileText)
 {
-	regex re("</(\\w+)>");
-	smatch match;
-	if (regex_search(line.begin(), line.end(), match, re)) {
-		return match[1] != "";
-	}
-	return false;
+	const std::regex re_openTags(R"!!(<([\w+]*)>)!!", std::regex::icase);
+	const std::regex re_closedTags(R"!!(</([\w+]*)>)!!", std::regex::icase);
+	const std::regex re_text(R"!!([>]([\w\s.,\(\)\[\]+]+)[<])!!", std::regex::icase);
+
+	vector<Token> Tokens;
+
+	add_tokens(re_openTags, xmlFileText, Tokens, TokenType::OpenTag);
+	add_tokens(re_closedTags, xmlFileText, Tokens, TokenType::CloseTag);
+	add_tokens(re_text, xmlFileText, Tokens, TokenType::Text);
+
+	sort(Tokens.begin(), Tokens.end());
+
+	this->OrderedTokens = Tokens;
 }
 
-void XMLParser::PrintNodes(vector<string>::iterator start, vector<string>::iterator end, int level)
+
+
+XMLData XMLParser::parse(vector<Token>::iterator it, int level, ParentNode& parent)
 {
-		for (auto it = start; it < end; ) {
-			it = PrintNode(it,level);
+	auto res = parseNode(it, level);
+	//res.first->print();
+	return XMLData(res.first);
+}
+
+pair<Node*, vector<Token>::iterator> XMLParser::parseNode(vector<Token>::iterator it, int level)
+{
+	Node * myNode = nullptr;
+	vector<Token>::iterator newStart;
+	if (it->type == TokenType::OpenTag) {
+		auto children = GetChildren(it, level + 1);
+		myNode = new ParentNode(it->text, level, children.first);
+		newStart = children.second + 1;
+	}
+	else if (it->type == TokenType::Text) {
+		myNode = new TextNode(it->text, level);
+		newStart = it + 1;
+	}
+	else if (it->type == TokenType::CloseTag) {
+		throw "Can't parse closing tag!";
+	}
+	return make_pair(myNode, newStart);
+}
+
+void XMLParser::add_tokens(const std::regex reg, string& text, vector<Token>& tokens, TokenType type) {
+	std::regex_token_iterator<std::string::iterator> a(text.begin(), text.end(), reg);
+	std::regex_token_iterator<std::string::iterator> rend;
+	while (a != rend) {
+		string myText = (*a).str();
+		if (type == TokenType::Text) {
+			myText = myText.substr(1, myText.size() - 2);
+			tokens.push_back(Token(myText, type, std::distance(text.begin(), (a->first) + 1)));
 		}
-}
-
-vector<string>::iterator XMLParser::PrintNode(vector<string>::iterator& node, int level)
-{
-	if (IsOpenTag(*node)) {
-		PrintWithTabs(*node, level);
-		auto children = GetChildren(node);
-		PrintNodes(children.first,children.second, level + 1);
-		PrintWithTabs("</"+GetOpenTagName(*node)+">", level);
-		return children.second+1;
-	}
-	else{
-		PrintWithTabs(*node, level);
-		return node + 1;
-	}
-}
-
-void XMLParser::PrintWithTabs(string text, int level)
-{
-	for (int i = 0; i < level; i++)
-		cout << "\t";
-	cout << text << endl;
-}
-
-pair<vector<string>::iterator, vector<string>::iterator> XMLParser::GetChildren(vector<string>::iterator& node)
-{
-	string openName = GetOpenTagName(*node);
-	auto closingTagit = find(node, XMLLines.end(), "</" + openName + ">");
-	return make_pair(node+1,closingTagit);
-}
-
-
-XMLData XMLParser::LoadFile(string filePath)
-{
-	/*ifstream XMLfile(filePath);
-	vector<string> XMLLines;
-	if (XMLfile.is_open())
-	{
-		string line;
-		while (getline(XMLfile, line))
-		{
-			trim(line);
-			XMLLines.push_back(line);
+		else if (type == TokenType::OpenTag) {
+			myText = myText.substr(1, myText.size() - 2);
+			tokens.push_back(Token(myText, type, std::distance(text.begin(), a->first) + 1));
 		}
-		PrintNodes(XMLLines, 0);
-
-		XMLfile.close();
+		else if (type == TokenType::CloseTag) {
+			myText = myText.substr(2, myText.size() - 3);
+			tokens.push_back(Token(myText, type, std::distance(text.begin(), a->first + 2)));
+		}
+		a++;
 	}
+}
 
-	else cout << "Unable to open file";*/
-
-	return XMLData();
+XMLData XMLParser::getData()
+{
+	return parse(OrderedTokens.begin(), 0, root);
 }
 
 XMLParser::XMLParser(string filePath)
@@ -102,15 +109,13 @@ XMLParser::XMLParser(string filePath)
 	if (XMLfile.is_open())
 	{
 		string line;
+		string fileData = "";
 		while (getline(XMLfile, line))
 		{
 			trim(line);
-			XMLLines.push_back(line);
+			fileData += line;
 		}
-
-
-		PrintNodes(XMLLines.begin(),XMLLines.end(), 0);
-
+		initOrderedTokens(fileData);
 		XMLfile.close();
 	}
 

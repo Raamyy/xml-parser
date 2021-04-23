@@ -1,24 +1,24 @@
 #pragma once
 
-#include "XMLData.h"
 #include <vector>
 #include <string>
+#include <regex>
+#include "XMLData.h"
+#include "Token.h"
 using namespace std;
 
 class XMLParser
 {
-	string GetOpenTagName(string line);
-	bool IsOpenTag(string line);
-	bool IsCloseTag(string line);
-	void PrintNodes(vector<string>::iterator start, vector<string>::iterator end, int level);
-	vector<string>::iterator PrintNode(vector<string>::iterator& node, int level);
-	void PrintWithTabs(string text, int level);
-	pair<vector<string>::iterator, vector<string>::iterator> GetChildren(vector<string>::iterator& node);
-
-	vector<string> XMLLines;
-
+	ParentNode root;
+	vector<Token> OrderedTokens;
+	vector<Token>::iterator GetClosingTag(vector<Token>::iterator open_token_it);
+	pair<vector<Node*>, vector<Token>::iterator> GetChildren(vector<Token>::iterator open_token_it, int level);
+	pair<Node*, vector<Token>::iterator> parseNode(vector<Token>::iterator it, int level);
+	XMLData parse(vector<Token>::iterator it, int level, ParentNode & parent);
+	void initOrderedTokens(string xmlFileText);
+	void add_tokens(const std::regex reg, string& text, vector<Token>& tokens, TokenType type);
 public:
-	XMLData LoadFile(string filePath);
+	XMLData getData();
 	XMLParser(string filePath);
 };
 

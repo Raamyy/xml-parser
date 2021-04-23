@@ -1,56 +1,26 @@
 <root>
     <planes_for_sale>
         <plane_data>
-            <year>
-			1977
-			</year>
-            <model>
-			Boeing 
-			</model>
-            <color>
-			Light blue and white
-			</color>
-            <description> 
-			New paint, nearly new interior, 685 hours SMOH, full IFR King avionics 
-			</description>
-            <price>
-			23,495 
-			</price>
-            <seller>
-			Skyway Aircraft 
-			</seller>
+            <year> 1977 </year>
+            <model> Boeing </model>
+            <color> Light blue and white </color>
+            <description> New paint, nearly new interior, 685 hours SMOH, full IFR King avionics </description>
+            <price> 23,495 </price>
+            <seller> Skyway Aircraft </seller>
             <location>
-                <city>
-				Rapid City, 
-				</city>
-                <state>
-				South Dakota 
-				</state>
+                <city> Rapid City, </city>
+                <state> South Dakota </state>
             </location>
         </plane_data>
         <plane_data>
-            <year>
-			1965 
-			</year>
-            <model>
-			Airbus 
-			</model>
-            <color>
-			Gold 
-			</color>
-            <description> 
-			240 hours SMOH, new Cleveland brakes, great shape 
-			</description>
-            <seller> 
-			John Seller
-			</seller>
+            <year> 1965 </year>
+            <model> Airbus </model>
+            <color> Gold </color>
+            <description> 240 hours SMOH, new Cleveland brakes, great shape </description>
+            <seller> John Seller </seller>
             <location>
-                <city> 
-				St. Joseph, 
-				</city>
-                <state>
-				Missouri 
-				</state>
+                <city> St. Joseph, </city>
+                <state> Missouri </state>
             </location>
         </plane_data>
     </planes_for_sale>
