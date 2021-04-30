@@ -4,6 +4,7 @@
 #include <vector>
 #include <regex>
 #include <algorithm>
+#include<stack>
 #include "Helpers.h"
 #include "TextNode.h"
 #include "ParentNode.h"
@@ -24,9 +25,17 @@ pair<vector<Node*>, vector<Token>::iterator> XMLParser::GetChildren(vector<Token
 vector<Token>::iterator XMLParser::GetClosingTag(vector<Token>::iterator open_token_it)
 {
 	string name = open_token_it->text;
-	auto it = open_token_it;
+	auto it = open_token_it+1;
+	stack<Token> tokensStack;
+	tokensStack.push(*open_token_it);
 	for (; it != OrderedTokens.end(); it++) {
-		if (it->text == name && it->type == TokenType::CloseTag) return it;
+		auto top = tokensStack.top();
+		if (it->type == TokenType::OpenTag) tokensStack.push(*it);
+		else if (it->type == TokenType::CloseTag && it->text == top.text) tokensStack.pop();
+		else if (it->type == TokenType::CloseTag && it->text != top.text) throw "closing tag </"+it->text+"> doesn't match an opening tag";
+
+		if (tokensStack.empty()) return it;
+		//if (it->text == name && it->type == TokenType::CloseTag) return it;
 	}
 	throw "closing tag not found for " + open_token_it->text;
 }
